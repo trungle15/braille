@@ -132,5 +132,8 @@ public class BitTree {
       String[] fields = line.split(",");
       set(fields[0], fields[1]);
     }
+
+    source.close();
+    
   }
 }
