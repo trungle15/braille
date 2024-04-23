@@ -1,5 +1,5 @@
 public class BitTreeNode {
-	
+
 	BitTreeNode left;
 	BitTreeNode right;
 

@@ -3,131 +3,118 @@ import java.security.InvalidKeyException;
 
 public class BitTree {
 
-	BitTreeNode root;
-	int depth;
+  BitTreeNode root;
+  int depth;
 
-	public BitTree(int n) {
-		this.root = new BitTreeNode();
-		this.depth = n;
-	}
+  public BitTree(int n) {
+    this.root = new BitTreeNode();
+    this.depth = n;
+  }
 
-	public void set(String bits, String value) throws InvalidKeyException {
-		if (bits.length() != depth) {
-			throw new InvalidKeyException("Invalid length for bits");
-		}
+  public void set(String bits, String value) throws InvalidKeyException {
+    if (bits.length() != depth) {
+      throw new InvalidKeyException("Invalid length for bits");
+    }
 
-		BitTreeNode current = root;
+    BitTreeNode current = root;
 
-		// Invalid character
-		for (int i = 0; i < bits.length(); i++) {
+    // Invalid character
+    for (int i = 0; i < bits.length(); i++) {
 
-			char c = bits.charAt(i);
+      char c = bits.charAt(i);
 
-			if (c != '0' && c != '1') {
-				throw new InvalidKeyException("Invalid bit sequence. Bit can only be either 0 or 1");
-			}
+      if (c != '0' && c != '1') {
+        throw new InvalidKeyException("Invalid bit sequence. Bit can only be either 0 or 1");
+      }
 
 
-			// Last character
-			if (i == bits.length() - 1) {
-				if (c == '0') {
-					current.left = new BitTreeLeaf(value);
-				} else {
-					current.right = new BitTreeLeaf(value);
-				}
-			}
+      // Last character
+      if (i == bits.length() - 1) {
+        if (c == '0') {
+          current.left = new BitTreeLeaf(value);
+        } else {
+          current.right = new BitTreeLeaf(value);
+        }
+      }
 
-			
-			else {
 
-				// Traverse left
-				if (c == '0') {
-					if (current.left == null) {
-						current.left = new BitTreeNode();
-					}
-					current = current.left;
-				}
+      else {
 
-				// Traverse right
-				else {
-					if (current.right == null) {
-						current.right = new BitTreeNode();
-					}
-					current = current.right;
-				}
-			}
-		}
-	}
+        // Traverse left
+        if (c == '0') {
+          if (current.left == null) {
+            current.left = new BitTreeNode();
+          }
+          current = current.left;
+        }
 
-	public String get(String bits) throws InvalidKeyException {
-		
-		if (bits.length() != depth) {
-			throw new InvalidKeyException("Invalid length for bits");
-		}
-		
-		BitTreeNode current = root;
+        // Traverse right
+        else {
+          if (current.right == null) {
+            current.right = new BitTreeNode();
+          }
+          current = current.right;
+        }
+      }
+    }
+  }
 
-		for (int i = 0; i < bits.length(); i++) {
-			char c = bits.charAt(i);
+  public String get(String bits) throws InvalidKeyException {
 
-			if (c != '0' && c != '1') {
-				throw new InvalidKeyException("Invalid bit sequence. Bit can only be either 0 or 1");
-			}
+    if (bits.length() != depth) {
+      throw new InvalidKeyException("Invalid length for bits");
+    }
 
-			if (c == '0') {
-				if (current.left == null) {
-					throw new InvalidKeyException("No left path at bit index " + i);
-				} else {
-					current = current.left;
-				}
-			} 
-			else {
-				if (current.right == null) {
-					throw new InvalidKeyException("No right path at bit index " + i);
-				}	else {
-					current = current.right;
-				}
-			}
-		}
+    BitTreeNode current = root;
 
-		BitTreeLeaf ret = (BitTreeLeaf) current;
+    for (int i = 0; i < bits.length(); i++) {
+      char c = bits.charAt(i);
 
-		return ret.getValue();
-	}
+      if (c != '0' && c != '1') {
+        throw new InvalidKeyException("Invalid bit sequence. Bit can only be either 0 or 1");
+      }
 
-	void dumpHelper(PrintWriter pen, BitTreeNode root) {
-		
-		StringBuilder stb = new StringBuilder();
-		
-		
-		while (root != null) {
-			if (root instanceof BitTreeLeaf) {
-				BitTreeLeaf ret = (BitTreeLeaf) root;
-				pen.print(',' + ret.getValue() + '\n');
-			}
-			else {
+      if (c == '0') {
+        if (current.left == null) {
+          throw new InvalidKeyException("No left path at bit index " + i);
+        } else {
+          current = current.left;
+        }
+      } else {
+        if (current.right == null) {
+          throw new InvalidKeyException("No right path at bit index " + i);
+        } else {
+          current = current.right;
+        }
+      }
+    }
 
-				if (root.left != null) {
-					pen.print('1');
-					dumpHelper(pen, root.left);
-				}
+    BitTreeLeaf ret = (BitTreeLeaf) current;
 
-				if (root.right != null) {
-					pen.print('0');
-					dumpHelper(pen, root.right);
-				}
-			}
-		}
-	}
+    return ret.getValue();
+  }
 
-	void dump(PrintWriter pen) {
-		// Pre-order traversal then print the path + value at end of node
-		/* Pseudocode:
-		 * initialize empty string
-		 * If node is empty return ''
-		 * Otherwise
-		 */
-		dumpHelper(pen, this.root);
-	}
+  void dumpHelper(PrintWriter pen, BitTreeNode node, String path) {
 
+    if (node == null) {
+      return;
+    }
+
+    if (node instanceof BitTreeLeaf) {
+      BitTreeLeaf leaf = (BitTreeLeaf) node;
+      pen.println(path + ',' + leaf.getValue());
+    }
+    else {
+      if (node.left != null) {
+        dumpHelper(pen, node.left, path + "0");
+      }
+      if (node.right != null) {
+        dumpHelper(pen, node.right, path + "1");
+      }
+    }
+  }
+
+  void dump(PrintWriter pen) {
+    dumpHelper(pen, this.root, "");
+  }
 }
