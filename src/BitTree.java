@@ -122,7 +122,7 @@ public class BitTree {
     dumpHelper(pen, this.root, "");
   }
 
-  public void load(InputStream source) throws IOException, InvalidKeyException {
+  public void load(InputStream source) throws InvalidKeyException, IOException {
 
     BufferedReader reader = new BufferedReader(new InputStreamReader(source));
 
