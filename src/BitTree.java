@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.security.InvalidKeyException;
 
@@ -94,7 +98,7 @@ public class BitTree {
     return ret.getValue();
   }
 
-  void dumpHelper(PrintWriter pen, BitTreeNode node, String path) {
+  private void dumpHelper(PrintWriter pen, BitTreeNode node, String path) {
 
     if (node == null) {
       return;
@@ -114,7 +118,19 @@ public class BitTree {
     }
   }
 
-  void dump(PrintWriter pen) {
+  public void dump(PrintWriter pen) {
     dumpHelper(pen, this.root, "");
+  }
+
+  public void load(InputStream source) throws IOException, InvalidKeyException {
+
+    BufferedReader reader = new BufferedReader(new InputStreamReader(source));
+
+    String line;
+
+    while ((line = reader.readLine()) != null) {
+      String[] fields = line.split(",");
+      set(fields[0], fields[1]);
+    }
   }
 }
