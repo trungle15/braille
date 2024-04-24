@@ -18,3 +18,6 @@ Where `[mode]` is either braille, ascii, or unicode, depending on the desired ou
 ## Attribution
 
 I would like to thank Professor Rebelsky for his instructions and guidance, especially on his Q&A section and test suite.
+
+## GitHub Link:
+https://github.com/trungle15/braille
