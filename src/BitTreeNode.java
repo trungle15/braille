@@ -1,3 +1,7 @@
+/**
+ * Represents a node in a binary tree.
+ * @author Trung Le
+ */
 public class BitTreeNode {
 
   BitTreeNode left;
@@ -6,5 +10,5 @@ public class BitTreeNode {
   public BitTreeNode() {
     this.left = null;
     this.right = null;
-  }
-}
+  } // BitTreeNode
+} // class BitTreeNode
